@@ -678,6 +678,5 @@ cd scheduler-project
 
 ---
 ## ERD
-![Image](https://github.com/user-attachments/assets/349ba570-f7ea-4a25-92c9-2f419f34850a)
-
+![Image](https://github.com/user-attachments/assets/b94a1909-030d-4e7b-9520-cda2bb0edb97)
 
