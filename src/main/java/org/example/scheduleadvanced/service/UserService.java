@@ -35,21 +35,21 @@ public class UserService {
         Optional<User> optionalUser = userRepository.findUserByEmail(email);
         if(optionalUser.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 유저 없음");
         User user = optionalUser.get();
-        return new UserResponseDto(user.getId(), user.getEmail(), user.getNickname());
+        return new UserResponseDto(user.getId(), user.getEmail(), user.getNickname(), user.getCreatedAt(), user.getUpdatedAt());
     }
 
     public UserResponseDto findUserByNickname(String nickname){
         Optional<User> optionalUser = userRepository.findUserByNickname(nickname);
         if(optionalUser.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 유저 없음");
         User user = optionalUser.get();
-        return new UserResponseDto(user.getId(), user.getEmail(), user.getNickname());
+        return new UserResponseDto(user.getId(), user.getEmail(), user.getNickname(), user.getCreatedAt(), user.getUpdatedAt());
     }
 
     public UserResponseDto findUserById(Long id){
         Optional<User> optionalUser = userRepository.findById(id);
         if(optionalUser.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 유저 없음");
         User user = optionalUser.get();
-        return new UserResponseDto(user.getId(), user.getEmail(), user.getNickname());
+        return new UserResponseDto(user.getId(), user.getEmail(), user.getNickname(), user.getCreatedAt(), user.getUpdatedAt());
     }
 
     @Transactional
