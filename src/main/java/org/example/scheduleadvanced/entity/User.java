@@ -4,12 +4,11 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.relational.core.mapping.Table;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "users")
+@Table(name = "user")
 public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // 자동 증가 설정
@@ -26,4 +25,10 @@ public class User extends BaseEntity {
 
     @Column(unique = true)
     private String refreshToken;
+
+    public User(String email, String password, String nickname){
+        this.email = email;
+        this.password = password;
+        this.nickname = nickname;
+    }
 }

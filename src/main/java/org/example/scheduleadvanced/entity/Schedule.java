@@ -1,24 +1,38 @@
 package org.example.scheduleadvanced.entity;
 
 import lombok.*;
-import org.springframework.data.relational.core.mapping.Table;
 import jakarta.persistence.*;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "schedules")
+@Table(name = "schedule")
 public class Schedule extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // 자동 증가 설정
     private Long id;
 
-    @Column(name = "user_id")
-    private Long userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Column(nullable = false)
     private String title;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "longtext")
     private String content;
+
+    public Schedule(String title, String content){
+        this.title = title;
+        this.content = content;
+    }
+
+    public void setUser(User user){
+        this.user = user;
+    }
+
+    public void updateSchedule(String title, String content){
+        this.title = title;
+        this.content = content;
+    }
 }
