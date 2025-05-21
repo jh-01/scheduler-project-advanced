@@ -1,7 +1,10 @@
 package org.example.scheduleadvanced.service;
 
 import jakarta.transaction.Transactional;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import org.example.scheduleadvanced.dto.SigninResponseDto;
 import org.example.scheduleadvanced.dto.UserResponseDto;
 import org.example.scheduleadvanced.repository.UserRepository;
 import org.springframework.http.HttpStatus;
@@ -84,5 +87,11 @@ public class UserService {
 
     public void DeleteUser(Long id){
         userRepository.delete(userRepository.findUserById(id));
+    }
+
+    public SigninResponseDto login(@NotBlank String email, @NotNull String password) {
+        // 입력받은 userName, password와 일치하는 Database 조회
+        User user = userRepository.findIdByEmailAndPassword(email, password);
+        return new SigninResponseDto(user.getId());
     }
 }
