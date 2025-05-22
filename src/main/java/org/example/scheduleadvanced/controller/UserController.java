@@ -33,31 +33,6 @@ public class UserController {
         return new ResponseEntity<>(userResponseDto, HttpStatus.CREATED);
     }
 
-    @PostMapping("signin")
-    public String signin(
-            @Valid @ModelAttribute SigninRequestDto request,
-            HttpServletResponse response // 쿠키값 세팅에 필요
-    ){
-        // 로그인 유저 조회
-        SigninResponseDto responseDto = userService.login(request.getEmail(), request.getPassword());
-
-        if (responseDto.getId() == null) {
-            // 로그인 실패 예외처리
-            return "login";
-        }
-
-        // 로그인 성공 처리
-        // 쿠키 생성, Value는 문자열로 변환하여야 한다.
-        Cookie cookie = new Cookie("userId", String.valueOf(responseDto.getId()));
-
-        // 쿠키에 값 세팅 (expire 시간을 주지 않으면 세션쿠키가 됨, 브라우저 종료시 로그아웃)
-        // Response Set-Cookie: userId=1 형태로 전달된다.
-        response.addCookie(cookie);
-
-        // home 페이지로 리다이렉트
-        return "redirect:/home";
-    }
-
     @GetMapping("/all")
     public ResponseEntity<List<UserResponseDto>> getAllUsers(){
         List<UserResponseDto> userList = userService.findAllUsers();
