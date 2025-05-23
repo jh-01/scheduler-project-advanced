@@ -4,8 +4,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.example.scheduleadvanced.dto.LoginResponseDto;
-import org.example.scheduleadvanced.dto.UserResponseDto;
-import org.example.scheduleadvanced.service.UserService;
+import org.example.scheduleadvanced.dto.MemberResponseDto;
+import org.example.scheduleadvanced.service.MemberService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 @RequiredArgsConstructor
 public class SessionHomeController {
 
-    private final UserService userService;
+    private final MemberService memberService;
 
     @GetMapping("/session-home")
     public String home(
@@ -28,7 +28,7 @@ public class SessionHomeController {
             return "session-login";
         }
 
-        UserResponseDto loginUser = (UserResponseDto) session.getAttribute(SessionUserController.Const.LOGIN_USER);
+        MemberResponseDto loginUser = (MemberResponseDto) session.getAttribute(SessionUserController.Const.LOGIN_USER);
 
         if (loginUser == null) {
             return "session-login";

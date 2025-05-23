@@ -6,8 +6,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.scheduleadvanced.dto.LoginRequestDto;
 import org.example.scheduleadvanced.dto.LoginResponseDto;
-import org.example.scheduleadvanced.dto.UserResponseDto;
-import org.example.scheduleadvanced.service.UserService;
+import org.example.scheduleadvanced.dto.MemberResponseDto;
+import org.example.scheduleadvanced.service.MemberService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 @RequiredArgsConstructor
 public class SessionUserController {
 
-    private final UserService userService;
+    private final MemberService memberService;
 
     public abstract static class Const {
         public static final String LOGIN_USER = "loginUser";
@@ -28,7 +28,7 @@ public class SessionUserController {
             HttpServletRequest request
     ) {
 
-        LoginResponseDto responseDto = userService.login(dto.getEmail(), dto.getPassword());
+        LoginResponseDto responseDto = memberService.login(dto.getEmail(), dto.getPassword());
         Long userId = responseDto.getId();
 
         if (userId == null) {
@@ -37,7 +37,7 @@ public class SessionUserController {
 
         HttpSession session = request.getSession();
 
-        UserResponseDto loginUser = userService.findUserById(userId);
+        MemberResponseDto loginUser = memberService.findUserById(userId);
 
         session.setAttribute(Const.LOGIN_USER, loginUser);
 

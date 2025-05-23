@@ -2,13 +2,13 @@ package org.example.scheduleadvanced.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.example.scheduleadvanced.entity.User;
+import org.example.scheduleadvanced.entity.Member;
 
 import java.time.LocalDateTime;
 
 @Getter
 @AllArgsConstructor
-public class UserResponseDto {
+public class MemberResponseDto {
     private Long id;
     private String email;
     private String nickname;
@@ -16,7 +16,7 @@ public class UserResponseDto {
 
     private final LocalDateTime updatedAt;
 
-    public static UserResponseDto toDto(User user){
-        return new UserResponseDto(user.getId(), user.getEmail(), user.getNickname(), user.getCreatedAt(), user.getUpdatedAt());
+    public static MemberResponseDto toDto(Member user){
+        return new MemberResponseDto(user.getId(), user.getEmail(), user.getNickname(), user.getCreatedAt(), user.getUpdatedAt());
     }
 }

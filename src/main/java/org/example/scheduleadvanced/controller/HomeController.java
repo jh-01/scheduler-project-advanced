@@ -1,8 +1,8 @@
 package org.example.scheduleadvanced.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.example.scheduleadvanced.dto.UserResponseDto;
-import org.example.scheduleadvanced.service.UserService;
+import org.example.scheduleadvanced.dto.MemberResponseDto;
+import org.example.scheduleadvanced.service.MemberService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 @RequiredArgsConstructor
 public class HomeController {
-    private final UserService userService;
+    private final MemberService memberService;
 
     @GetMapping("/home")
     public String home(
@@ -26,7 +26,7 @@ public class HomeController {
         }
 
         // 일치하는 회원정보가 아닌 경우 로그인 페이지로 이동
-        UserResponseDto loginUser = userService.findUserByEmail(email);
+        MemberResponseDto loginUser = memberService.findUserByEmail(email);
         if(loginUser == null) {
             return "login";
         }

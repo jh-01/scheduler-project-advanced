@@ -4,7 +4,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.example.scheduleadvanced.dto.ScheduleResponseDto;
 import org.example.scheduleadvanced.entity.Schedule;
-import org.example.scheduleadvanced.entity.User;
+import org.example.scheduleadvanced.entity.Member;
 import org.example.scheduleadvanced.repository.ScheduleRepository;
 import org.example.scheduleadvanced.repository.UserRepository;
 import org.springframework.http.HttpStatus;
@@ -22,8 +22,8 @@ public class ScheduleService {
 
     public ScheduleResponseDto createSchedule(String title, String content, long userId){
         Schedule schedule = new Schedule(title, content);
-        Optional<User> optionalUser = userRepository.findById(userId);
-        User user = optionalUser.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다."));
+        Optional<Member> optionalUser = userRepository.findById(userId);
+        Member user = optionalUser.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다."));
         schedule.setUser(user);
         scheduleRepository.save(schedule);
         return ScheduleResponseDto.toDto(schedule);

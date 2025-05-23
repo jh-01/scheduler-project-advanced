@@ -4,7 +4,6 @@ import lombok.*;
 import jakarta.persistence.*;
 
 @Entity
-@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "schedule")
 public class Schedule extends BaseEntity {
@@ -13,8 +12,8 @@ public class Schedule extends BaseEntity {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     @Column(nullable = false)
     private String title;
@@ -27,8 +26,8 @@ public class Schedule extends BaseEntity {
         this.content = content;
     }
 
-    public void setUser(User user){
-        this.user = user;
+    public void setMember(Member member){
+        this.member = member;
     }
 
     public void updateSchedule(String title, String content){

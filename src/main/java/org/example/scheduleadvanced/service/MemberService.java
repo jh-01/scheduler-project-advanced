@@ -5,11 +5,11 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.example.scheduleadvanced.dto.LoginResponseDto;
-import org.example.scheduleadvanced.dto.UserResponseDto;
+import org.example.scheduleadvanced.dto.MemberResponseDto;
+import org.example.scheduleadvanced.entity.Member;
 import org.example.scheduleadvanced.repository.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.example.scheduleadvanced.entity.User;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -17,72 +17,72 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class MemberService {
 
     private final UserRepository userRepository;
 
-    public UserResponseDto signup(String email, String nickname, String password){
-        User user = new User(email, password, nickname);
+    public MemberResponseDto signup(String email, String nickname, String password){
+        Member user = new Member(email, password, nickname);
         userRepository.save(user);
-        return UserResponseDto.toDto(user);
+        return MemberResponseDto.toDto(user);
     }
 
-    public List<UserResponseDto> findAllUsers(){
+    public List<MemberResponseDto> findAllUsers(){
         return userRepository.findAll()
                 .stream()
-                .map(UserResponseDto::toDto)
+                .map(MemberResponseDto::toDto)
                 .toList();
     }
 
-    public UserResponseDto findUserByEmail(String email){
-        Optional<User> optionalUser = userRepository.findUserByEmail(email);
+    public MemberResponseDto findUserByEmail(String email){
+        Optional<Member> optionalUser = userRepository.findUserByEmail(email);
         if(optionalUser.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 유저 없음");
-        User user = optionalUser.get();
-        return new UserResponseDto(user.getId(), user.getEmail(), user.getNickname(), user.getCreatedAt(), user.getUpdatedAt());
+        Member user = optionalUser.get();
+        return new MemberResponseDto(user.getId(), user.getEmail(), user.getNickname(), user.getCreatedAt(), user.getUpdatedAt());
     }
 
-    public UserResponseDto findUserByNickname(String nickname){
-        Optional<User> optionalUser = userRepository.findUserByNickname(nickname);
+    public MemberResponseDto findUserByNickname(String nickname){
+        Optional<Member> optionalUser = userRepository.findUserByNickname(nickname);
         if(optionalUser.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 유저 없음");
-        User user = optionalUser.get();
-        return new UserResponseDto(user.getId(), user.getEmail(), user.getNickname(), user.getCreatedAt(), user.getUpdatedAt());
+        Member user = optionalUser.get();
+        return new MemberResponseDto(user.getId(), user.getEmail(), user.getNickname(), user.getCreatedAt(), user.getUpdatedAt());
     }
 
-    public UserResponseDto findUserById(Long id){
-        Optional<User> optionalUser = userRepository.findById(id);
+    public MemberResponseDto findUserById(Long id){
+        Optional<Member> optionalUser = userRepository.findById(id);
         if(optionalUser.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 유저 없음");
-        User user = optionalUser.get();
-        return new UserResponseDto(user.getId(), user.getEmail(), user.getNickname(), user.getCreatedAt(), user.getUpdatedAt());
+        Member user = optionalUser.get();
+        return new MemberResponseDto(user.getId(), user.getEmail(), user.getNickname(), user.getCreatedAt(), user.getUpdatedAt());
     }
 
     @Transactional
-    public UserResponseDto modifyUserEmail(Long id, String oldEmail, String newEmail){
-        User user = userRepository.findUserById(id);
+    public MemberResponseDto modifyUserEmail(Long id, String oldEmail, String newEmail){
+        Member user = userRepository.findUserById(id);
         if (!user.getEmail().equals(oldEmail)) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "이메일이 일치하지 않습니다.");
         }
         user.updateEmail(newEmail);
-        return UserResponseDto.toDto(user);
+        return MemberResponseDto.toDto(user);
     }
 
     @Transactional
-    public UserResponseDto modifyUserNickname(Long id, String oldNickname, String newNickname){
-        User user = userRepository.findUserById(id);
+    public MemberResponseDto modifyUserNickname(Long id, String oldNickname, String newNickname){
+        Member user = userRepository.findUserById(id);
         if (!user.getNickname().equals(oldNickname)) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "닉네임이 일치하지 않습니다.");
         }
         user.updateNickname(newNickname);
-        return UserResponseDto.toDto(user);
+        return MemberResponseDto.toDto(user);
     }
 
     @Transactional
-    public UserResponseDto modifyUserPassword(Long id, String oldPassword, String newPassword){
-        User user = userRepository.findUserById(id);
+    public MemberResponseDto modifyUserPassword(Long id, String oldPassword, String newPassword){
+        Member user = userRepository.findUserById(id);
         if (!user.getEmail().equals(oldPassword)) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "비밀번호가 일치하지 않습니다.");
         }
         user.updatePassword(newPassword);
-        return UserResponseDto.toDto(user);
+        return MemberResponseDto.toDto(user);
     }
 
     public void DeleteUser(Long id){
@@ -91,7 +91,7 @@ public class UserService {
 
     public LoginResponseDto login(@NotBlank String email, @NotNull String password) {
         // 입력받은 userName, password와 일치하는 Database 조회
-        User user = userRepository.findIdByEmailAndPassword(email, password);
+        Member user = userRepository.findIdByEmailAndPassword(email, password);
         return new LoginResponseDto(user.getId());
     }
 }

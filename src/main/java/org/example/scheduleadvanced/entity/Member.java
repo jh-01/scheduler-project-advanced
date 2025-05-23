@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "user")
-public class User extends BaseEntity {
+@Table(name = "member")
+public class Member extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // 자동 증가 설정
     private Long id;
@@ -26,7 +26,7 @@ public class User extends BaseEntity {
     @Column(unique = true)
     private String refreshToken;
 
-    public User(String email, String password, String nickname){
+    public Member(String email, String password, String nickname){
         this.email = email;
         this.password = password;
         this.nickname = nickname;

@@ -5,19 +5,15 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.scheduleadvanced.dto.*;
-import org.example.scheduleadvanced.service.UserService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.example.scheduleadvanced.service.MemberService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
 public class LoginController {
 
-    private final UserService userService;
+    private final MemberService memberService;
 
     @GetMapping("/login")
     public String loginForm() {
@@ -30,7 +26,7 @@ public class LoginController {
             HttpServletResponse response // 쿠키값 세팅에 필요
     ){
         // 로그인 유저 조회
-        LoginResponseDto responseDto = userService.login(request.getEmail(), request.getPassword());
+        LoginResponseDto responseDto = memberService.login(request.getEmail(), request.getPassword());
 
         if (request.getEmail() == null) {
             return "login";
