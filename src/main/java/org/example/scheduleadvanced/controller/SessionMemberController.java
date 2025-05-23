@@ -12,9 +12,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.security.auth.login.LoginException;
+
 @Controller
 @RequiredArgsConstructor
-public class SessionUserController {
+public class SessionMemberController {
 
     private final MemberService memberService;
 
@@ -26,7 +28,7 @@ public class SessionUserController {
     public String login(
             @Valid @ModelAttribute LoginRequestDto dto,
             HttpServletRequest request
-    ) {
+    ) throws LoginException {
 
         LoginResponseDto responseDto = memberService.login(dto.getEmail(), dto.getPassword());
         Long userId = responseDto.getId();

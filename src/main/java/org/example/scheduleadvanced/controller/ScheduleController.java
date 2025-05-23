@@ -23,28 +23,28 @@ public class ScheduleController {
     @PostMapping
     public ResponseEntity<ScheduleResponseDto> createSchedule(
             // ServletRequest request,
-            // @CookieValue(name = "userId", required = true) Long userId, // String->Long 자동 타입컨버팅
+            // @CookieValue(name = "memberId", required = true) Long memberId, // String->Long 자동 타입컨버팅
             @RequestBody CreateScheduleRequestDto scheduleRequestDto
-            ) throws IOException, ServletException {
+            ) {
         // HttpServletRequest httpServletRequest = (HttpServletRequest) request;
 
         ScheduleResponseDto scheduleResponseDto =
                 scheduleService.createSchedule(
                         scheduleRequestDto.getTitle(),
                         scheduleRequestDto.getContent(),
-                        scheduleRequestDto.getUserId()
+                        scheduleRequestDto.getMemberId()
                 );
         return new ResponseEntity<>(scheduleResponseDto, HttpStatus.CREATED);
     }
 
     @GetMapping
     public ResponseEntity<List<ScheduleResponseDto>> getAllSchedules(
-            @RequestParam(required = false) Long userId
+            @RequestParam(required = false) Long memberId
     ){
         List<ScheduleResponseDto> scheduleList =
-                userId == null?
+                memberId == null?
                 scheduleService.getAllSchedules():
-                scheduleService.getAllSchedulesById(userId);
+                scheduleService.getAllSchedulesById(memberId);
         return new ResponseEntity<>(scheduleList, HttpStatus.OK);
     }
 

@@ -45,31 +45,31 @@ public class MemberController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<MemberResponseDto> modifyUserEmail(
+    public ResponseEntity<ApiResponse<MemberResponseDto>> modifyMember(
             @PathVariable Long id,
-            @RequestBody ModelModifyRequestDto modifyDto
+            @RequestBody MemberModifyRequestDto modifyDto
             ){
             modifyDto.setId(id);
-            MemberResponseDto responseDto = null;
 
             if(modifyDto.isEmailUpdate()){
-                responseDto = memberService.modifyUserEmail(modifyDto.getId(), modifyDto.getOldEmail(), modifyDto.getEmail());
+                MemberResponseDto memberResponseDto = memberService.modifyMemberEmail(modifyDto.getId(), modifyDto.getOldEmail(), modifyDto.getEmail());
+                return ResponseEntity.ok(new ApiResponse<>(HttpStatus.OK, true, memberResponseDto, null, "이메일 수정이 완료되었습니다."));
             } else if(modifyDto.isNicknameUpdate()){
-                responseDto = memberService.modifyUserNickname(modifyDto.getId(), modifyDto.getOldNickname(), modifyDto.getNickname());
+                MemberResponseDto memberResponseDto = memberService.modifyMemberNickname(modifyDto.getId(), modifyDto.getOldNickname(), modifyDto.getNickname());
+                return ResponseEntity.ok(new ApiResponse<>(HttpStatus.OK, true, memberResponseDto, null, "닉네임 수정이 완료되었습니다."));
             } else if(modifyDto.isPasswordUpdate()){
-                responseDto = memberService.modifyUserPassword(modifyDto.getId(), modifyDto.getOldPassword(), modifyDto.getPassword());
+                memberService.modifyMemberPassword(modifyDto.getId(), modifyDto.getOldPassword(), modifyDto.getPassword());
+                return ResponseEntity.ok().body(new ApiResponse<>(HttpStatus.OK, true, null, null, "비밀번호 수정이 완료되었습니다."));
             } else {
                 throw new IllegalArgumentException("수정할 내용을 입력해주세요.");
             }
-
-            return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(
+    public ResponseEntity<String> deleteUser(
             @PathVariable long id
     ){
         memberService.DeleteUser(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return ResponseEntity.ok("유저 삭제 완료했습니다.");
     }
 }

@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 @RequiredArgsConstructor
 public class SessionHomeController {
 
-    private final MemberService memberService;
-
     @GetMapping("/session-home")
     public String home(
             HttpServletRequest request,
@@ -28,7 +26,7 @@ public class SessionHomeController {
             return "session-login";
         }
 
-        MemberResponseDto loginUser = (MemberResponseDto) session.getAttribute(SessionUserController.Const.LOGIN_USER);
+        MemberResponseDto loginUser = (MemberResponseDto) session.getAttribute(SessionMemberController.Const.LOGIN_USER);
 
         if (loginUser == null) {
             return "session-login";
@@ -42,7 +40,7 @@ public class SessionHomeController {
 
     @GetMapping("/v2/session-home")
     public String homeV2(
-            @SessionAttribute(name = SessionUserController.Const.LOGIN_USER, required = false) LoginResponseDto loginUser,
+            @SessionAttribute(name = SessionMemberController.Const.LOGIN_USER, required = false) LoginResponseDto loginUser,
             Model model
             ){
         if(loginUser == null) return "session-login";

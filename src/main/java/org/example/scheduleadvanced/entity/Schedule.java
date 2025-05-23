@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "schedule")
+@Getter
 public class Schedule extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // 자동 증가 설정

@@ -9,6 +9,8 @@ import org.example.scheduleadvanced.service.MemberService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.security.auth.login.LoginException;
+
 @Controller
 @RequiredArgsConstructor
 public class LoginController {
@@ -24,11 +26,11 @@ public class LoginController {
     public String login(
             @Valid @ModelAttribute LoginRequestDto request,
             HttpServletResponse response // 쿠키값 세팅에 필요
-    ){
+    ) throws LoginException {
         // 로그인 유저 조회
         LoginResponseDto responseDto = memberService.login(request.getEmail(), request.getPassword());
 
-        if (request.getEmail() == null) {
+        if (responseDto == null) {
             return "login";
         }
 

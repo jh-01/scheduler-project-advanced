@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class ScheduleResponseDto {
 
+    @Getter
     private final Long id;
 
     private final String title;
@@ -23,6 +24,6 @@ public class ScheduleResponseDto {
     private final LocalDateTime updatedAt;
 
     public static ScheduleResponseDto toDto(Schedule schedule){
-        return new ScheduleResponseDto(schedule.getId(), schedule.getTitle(), schedule.getContent(), schedule.getUser().getNickname(), schedule.getCreatedAt(), schedule.getUpdatedAt());
+        return new ScheduleResponseDto(schedule.getId(), schedule.getTitle(), schedule.getContent(), schedule.getMember().getNickname(), schedule.getCreatedAt(), schedule.getUpdatedAt());
     }
 }

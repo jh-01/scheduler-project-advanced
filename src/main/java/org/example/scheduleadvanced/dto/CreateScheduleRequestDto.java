@@ -14,5 +14,5 @@ public class CreateScheduleRequestDto {
 
     private final String content;
 
-    private final Long userId;
+    private final Long memberId;
 }

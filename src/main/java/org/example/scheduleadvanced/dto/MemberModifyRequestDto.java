@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Builder
-public class ModelModifyRequestDto {
+public class MemberModifyRequestDto {
     @Setter
     private Long id;
     private final String email;

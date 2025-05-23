@@ -6,7 +6,7 @@ import org.example.scheduleadvanced.dto.ScheduleResponseDto;
 import org.example.scheduleadvanced.entity.Schedule;
 import org.example.scheduleadvanced.entity.Member;
 import org.example.scheduleadvanced.repository.ScheduleRepository;
-import org.example.scheduleadvanced.repository.UserRepository;
+import org.example.scheduleadvanced.repository.MemberRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -18,13 +18,13 @@ import java.util.Optional;
 public class ScheduleService {
 
     private final ScheduleRepository scheduleRepository;
-    private final UserRepository userRepository;
+    private final MemberRepository memberRepository;
 
     public ScheduleResponseDto createSchedule(String title, String content, long userId){
         Schedule schedule = new Schedule(title, content);
-        Optional<Member> optionalUser = userRepository.findById(userId);
-        Member user = optionalUser.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다."));
-        schedule.setUser(user);
+        Optional<Member> optionalUser = memberRepository.findById(userId);
+        Member member = optionalUser.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다."));
+        schedule.setMember(member);
         scheduleRepository.save(schedule);
         return ScheduleResponseDto.toDto(schedule);
     }
@@ -38,7 +38,7 @@ public class ScheduleService {
 
     public List<ScheduleResponseDto> getAllSchedulesById(Long userId) {
 
-        return scheduleRepository.findAllByUserId(userId)
+        return scheduleRepository.findAllByMemberId(userId)
                 .stream()
                 .map(ScheduleResponseDto::toDto)
                 .toList();
