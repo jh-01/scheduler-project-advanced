@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.scheduleadvanced.dto.*;
 import org.example.scheduleadvanced.service.MemberService;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.security.auth.login.LoginException;
@@ -24,7 +25,7 @@ public class LoginController {
 
     @PostMapping("login")
     public String login(
-            @Valid @ModelAttribute LoginRequestDto request,
+            @Validated @ModelAttribute LoginRequestDto request,
             HttpServletResponse response // 쿠키값 세팅에 필요
     ) throws LoginException {
         // 로그인 유저 조회

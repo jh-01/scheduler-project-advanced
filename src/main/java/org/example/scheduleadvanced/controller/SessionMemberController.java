@@ -9,6 +9,7 @@ import org.example.scheduleadvanced.dto.LoginResponseDto;
 import org.example.scheduleadvanced.dto.MemberResponseDto;
 import org.example.scheduleadvanced.service.MemberService;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -26,7 +27,7 @@ public class SessionMemberController {
 
     @PostMapping("/session-login")
     public String login(
-            @Valid @ModelAttribute LoginRequestDto dto,
+            @Validated @ModelAttribute LoginRequestDto dto,
             HttpServletRequest request
     ) throws LoginException {
 

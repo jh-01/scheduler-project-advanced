@@ -11,7 +11,7 @@ import java.io.IOException;
 @Slf4j
 public class LoginFilter implements Filter {
 
-    private static final String[] WHITE_LIST = {"/", "/api/members/signup", "/login", "/logout"};
+    private static final String[] WHITE_LIST = {"/", "/session-login", "/login", "/logout"};
 
     @Override
     public void doFilter(
@@ -20,17 +20,18 @@ public class LoginFilter implements Filter {
             FilterChain filterChain
     ) throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
-        String requestUrl = httpServletRequest.getRequestURI();
-
         HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
+
+        String requestUrl = httpServletRequest.getRequestURI();
+        String method = httpServletRequest.getMethod();
 
         log.info("로그인 필터 로직 실행");
 
         // 로그인 체크하는 URL인지 검사
-        if(!isWhiteList(requestUrl)){
+        if(!isWhiteList(requestUrl, method)){
             HttpSession session = httpServletRequest.getSession(false);
 
-            if(session == null || session.getAttribute("sessionKey값") == null){
+            if(session == null || session.getAttribute("loginUser") == null){
                 throw new RuntimeException("로그인해주세요");
             }
 
@@ -45,7 +46,18 @@ public class LoginFilter implements Filter {
 
     }
 
-    private boolean isWhiteList(String requestUrl) {
-        return PatternMatchUtils.simpleMatch(WHITE_LIST, requestUrl);
+    private boolean isWhiteList(String url, String method) {
+        // POST /api/members 만 허용
+        if ("/api/members".equals(url) && "POST".equalsIgnoreCase(method)) {
+            return true;
+        }
+
+        // 기본 화이트리스트 경로 검사
+        for (String whiteUrl : WHITE_LIST) {
+            if (PatternMatchUtils.simpleMatch(whiteUrl, url)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -1,11 +1,14 @@
 package org.example.scheduleadvanced.controller;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.example.scheduleadvanced.dto.*;
 import org.example.scheduleadvanced.service.MemberService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,7 +22,7 @@ public class MemberController {
 
     @PostMapping
     public ResponseEntity<MemberResponseDto> signUp(
-            @RequestBody SignupRequestDto signupRequestDto
+            @Validated @RequestBody SignupRequestDto signupRequestDto
     ) {
         MemberResponseDto memberResponseDto =
                 memberService.signup(
@@ -38,7 +41,7 @@ public class MemberController {
 
     @GetMapping("/{id}")
     public ResponseEntity<MemberResponseDto> getUserById(
-            @PathVariable Long id
+            @NotNull @PathVariable Long id
     ){
         MemberResponseDto user = memberService.findUserById(id);
         return new ResponseEntity<>(user, HttpStatus.FOUND);
@@ -46,8 +49,8 @@ public class MemberController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<ApiResponse<MemberResponseDto>> modifyMember(
-            @PathVariable Long id,
-            @RequestBody MemberModifyRequestDto modifyDto
+            @NotNull @PathVariable Long id,
+            @Validated @RequestBody MemberModifyRequestDto modifyDto
             ){
             modifyDto.setId(id);
 
@@ -67,7 +70,7 @@ public class MemberController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteUser(
-            @PathVariable long id
+            @NotNull @PathVariable long id
     ){
         memberService.DeleteUser(id);
         return ResponseEntity.ok("유저 삭제 완료했습니다.");
