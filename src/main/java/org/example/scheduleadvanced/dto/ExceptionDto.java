@@ -1,9 +1,10 @@
 package org.example.scheduleadvanced.dto;
 
 import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
 import org.example.scheduleadvanced.dto.type.ErrorCode;
 
-
+@Getter
 public class ExceptionDto {
     @NotNull
     private final int code;

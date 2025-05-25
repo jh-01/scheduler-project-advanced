@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.scheduleadvanced.dto.*;
+import org.example.scheduleadvanced.entity.Member;
 import org.example.scheduleadvanced.service.MemberService;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
@@ -29,9 +30,9 @@ public class LoginController {
             HttpServletResponse response // 쿠키값 세팅에 필요
     ) throws LoginException {
         // 로그인 유저 조회
-        LoginResponseDto responseDto = memberService.login(request.getEmail(), request.getPassword());
+        LoginResponseDto member = memberService.login(request.getEmail(), request.getPassword());
 
-        if (responseDto == null) {
+        if (member == null) {
             return "login";
         }
 

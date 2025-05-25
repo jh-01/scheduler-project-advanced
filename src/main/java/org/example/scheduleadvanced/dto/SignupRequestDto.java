@@ -2,6 +2,7 @@ package org.example.scheduleadvanced.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -13,6 +14,7 @@ public class SignupRequestDto {
     private final String email;
 
     @NotBlank(message = "닉네임은 필수입니다")
+    @Size(max = 10, message = "닉네임은 10자 이내로 입력해주세요.")
     private final String nickname;
 
     @NotBlank

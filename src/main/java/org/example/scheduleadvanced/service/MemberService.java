@@ -14,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.security.auth.login.LoginException;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,45 +31,45 @@ public class MemberService {
         return MemberResponseDto.toDto(member);
     }
 
-    public List<MemberResponseDto> findAllUsers(){
+    public List<MemberResponseDto> findAllMembers(){
         return memberRepository.findAll()
                 .stream()
                 .map(MemberResponseDto::toDto)
                 .toList();
     }
 
-    public MemberResponseDto findUserByEmail(String email){
+    public MemberResponseDto findMemberByEmail(String email){
         Optional<Member> optionalUser = memberRepository.findMemberByEmail(email);
         if(optionalUser.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 유저 없음");
-        Member user = optionalUser.get();
-        return new MemberResponseDto(user.getId(), user.getEmail(), user.getNickname(), user.getCreatedAt(), user.getUpdatedAt());
+        Member member = optionalUser.get();
+        return new MemberResponseDto(member.getId(), member.getEmail(), member.getNickname(), member.getCreatedAt(), member.getUpdatedAt());
     }
 
-    public MemberResponseDto findUserById(Long id){
+    public MemberResponseDto findMemberById(Long id){
         Optional<Member> optionalUser = memberRepository.findById(id);
         if(optionalUser.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 유저 없음");
-        Member user = optionalUser.get();
-        return new MemberResponseDto(user.getId(), user.getEmail(), user.getNickname(), user.getCreatedAt(), user.getUpdatedAt());
+        Member member = optionalUser.get();
+        return new MemberResponseDto(member.getId(), member.getEmail(), member.getNickname(), member.getCreatedAt(), member.getUpdatedAt());
     }
 
     @Transactional
     public MemberResponseDto modifyMemberEmail(Long id, String oldEmail, String newEmail){
-        Member user = memberRepository.findMemberById(id);
-        if (!user.getEmail().equals(oldEmail)) {
+        Member member = memberRepository.findMemberById(id);
+        if (!member.getEmail().equals(oldEmail)) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "이메일이 일치하지 않습니다.");
         }
-        user.updateEmail(newEmail);
-        return MemberResponseDto.toDto(user);
+        member.updateEmail(newEmail);
+        return MemberResponseDto.toDto(member);
     }
 
     @Transactional
     public MemberResponseDto modifyMemberNickname(Long id, String oldNickname, String newNickname){
-        Member user = memberRepository.findMemberById(id);
-        if (!user.getNickname().equals(oldNickname)) {
+        Member member = memberRepository.findMemberById(id);
+        if (!member.getNickname().equals(oldNickname)) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "닉네임이 일치하지 않습니다.");
         }
-        user.updateNickname(newNickname);
-        return MemberResponseDto.toDto(user);
+        member.updateNickname(newNickname);
+        return MemberResponseDto.toDto(member);
     }
 
     @Transactional
@@ -86,8 +85,8 @@ public class MemberService {
         member.updatePassword(encodedNewPassword);
     }
 
-    public void DeleteUser(Long id){
-        memberRepository.delete(memberRepository.findMemberById(id));
+    public void DeleteMember(Long memberId){
+        memberRepository.delete(memberRepository.findMemberById(memberId));
     }
 
     public LoginResponseDto login(@NotBlank String email, @NotNull String password) throws LoginFailedException {
@@ -100,6 +99,6 @@ public class MemberService {
             throw new LoginFailedException("이메일 혹은 비밀번호 오류입니다.");
         }
 
-        return new LoginResponseDto(member.getId());
+        return LoginResponseDto.toDto(member);
     }
 }

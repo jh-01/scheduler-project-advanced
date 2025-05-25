@@ -16,7 +16,4 @@ public class ScheduleCreateRequestDto {
     @NotBlank(message = "내용은 필수입니다.")
     @Size(max = 100, message = "내용은 100자 이내로 입력해주세요.")
     private final String content;
-
-    @NotNull
-    private final Long memberId;
 }

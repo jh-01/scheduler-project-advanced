@@ -26,7 +26,7 @@ public class HomeController {
         }
 
         // 일치하는 회원정보가 아닌 경우 로그인 페이지로 이동
-        MemberResponseDto loginUser = memberService.findUserByEmail(email);
+        MemberResponseDto loginUser = memberService.findMemberByEmail(email);
         if(loginUser == null) {
             return "login";
         }
