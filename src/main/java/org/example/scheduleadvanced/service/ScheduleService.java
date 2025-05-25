@@ -20,9 +20,9 @@ public class ScheduleService {
     private final ScheduleRepository scheduleRepository;
     private final MemberRepository memberRepository;
 
-    public ScheduleResponseDto createSchedule(String title, String content, long userId){
+    public ScheduleResponseDto createSchedule(String title, String content, long memberId){
         Schedule schedule = new Schedule(title, content);
-        Optional<Member> optionalUser = memberRepository.findById(userId);
+        Optional<Member> optionalUser = memberRepository.findById(memberId);
         Member member = optionalUser.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다."));
         schedule.setMember(member);
         scheduleRepository.save(schedule);
@@ -54,7 +54,7 @@ public class ScheduleService {
     public ScheduleResponseDto modifySchedule(Long id, String title, String content){
         Schedule schedule = scheduleRepository.findScheduleById(id);
         schedule.updateSchedule(title, content);
-        return getScheduleById(id);
+        return ScheduleResponseDto.toDto(schedule);
     }
 
     public void deleteSchedule(Long id){

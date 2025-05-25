@@ -22,4 +22,14 @@ public class Comment extends BaseEntity {
 
     @Column(nullable = false)
     private String content;
+
+    public Comment(String content, Member member, Schedule schedule){
+        this.content = content;
+        this.member = member;
+        this.schedule = schedule;
+    }
+
+    public void updateContent(String content){
+        this.content = content;
+    }
 }
