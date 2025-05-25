@@ -12,7 +12,6 @@ import org.springframework.data.annotation.Id;
 @Builder
 public class MemberModifyRequestDto {
     @Setter
-    @NotNull
     private Long id;
 
     @Pattern(regexp = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$", message = "유효한 이메일 주소를 입력하세요.")

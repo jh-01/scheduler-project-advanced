@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
@@ -18,6 +19,7 @@ public class Member extends BaseEntity {
     private String email;
 
     @Column(nullable = false)
+    @Setter
     private String password;
 
     @Column(nullable = false, unique = true)

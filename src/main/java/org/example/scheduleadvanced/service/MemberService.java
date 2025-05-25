@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import org.example.scheduleadvanced.config.PasswordEncoder;
 import org.example.scheduleadvanced.dto.LoginResponseDto;
 import org.example.scheduleadvanced.dto.MemberResponseDto;
 import org.example.scheduleadvanced.entity.Member;
@@ -22,11 +23,13 @@ import java.util.Optional;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public MemberResponseDto signup(String email, String nickname, String password){
-        Member user = new Member(email, password, nickname);
-        memberRepository.save(user);
-        return MemberResponseDto.toDto(user);
+        Member member = new Member(email, password, nickname);
+        member.setPassword(passwordEncoder.encode(member.getPassword()));
+        memberRepository.save(member);
+        return MemberResponseDto.toDto(member);
     }
 
     public List<MemberResponseDto> findAllUsers(){
@@ -73,10 +76,14 @@ public class MemberService {
     @Transactional
     public void modifyMemberPassword(Long id, String oldPassword, String newPassword){
         Member member = memberRepository.findMemberById(id);
-        if (!member.getPassword().equals(oldPassword)) {
+        // 암호화된 비밀번호와 비교
+        if (!passwordEncoder.matches(oldPassword, member.getPassword())) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "비밀번호가 일치하지 않습니다.");
         }
-        member.updatePassword(newPassword);
+
+        // 새 비밀번호 암호화 후 저장
+        String encodedNewPassword = passwordEncoder.encode(newPassword);
+        member.updatePassword(encodedNewPassword);
     }
 
     public void DeleteUser(Long id){
@@ -85,8 +92,14 @@ public class MemberService {
 
     public LoginResponseDto login(@NotBlank String email, @NotNull String password) throws LoginFailedException {
         // 입력받은 userName, password와 일치하는 Database 조회
-        Optional<Member> optionalMember = memberRepository.findMemberByEmailAndPassword(email, password);
-        if(optionalMember.isEmpty()) throw new LoginFailedException("이메일 혹은 비밀번호 오류입니다.");
-        return new LoginResponseDto(optionalMember.get().getId());
+        Member member = memberRepository.findMemberByEmail(email)
+                .orElseThrow(() -> new LoginFailedException("이메일 혹은 비밀번호 오류입니다."));
+
+        // 암호 비교
+        if (!passwordEncoder.matches(password, member.getPassword())) {
+            throw new LoginFailedException("이메일 혹은 비밀번호 오류입니다.");
+        }
+
+        return new LoginResponseDto(member.getId());
     }
 }
