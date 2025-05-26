@@ -2,13 +2,14 @@ package org.example.scheduleadvanced.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.scheduleadvanced.dto.LoginRequestDto;
 import org.example.scheduleadvanced.dto.LoginResponseDto;
 import org.example.scheduleadvanced.dto.MemberResponseDto;
+import org.example.scheduleadvanced.entity.Member;
 import org.example.scheduleadvanced.service.MemberService;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -21,27 +22,25 @@ public class SessionMemberController {
     private final MemberService memberService;
 
     public abstract static class Const {
-        public static final String LOGIN_USER = "loginUser";
+        public static final String LOGIN_USER = "loginMember";
     }
 
     @PostMapping("/session-login")
     public String login(
-            @Valid @ModelAttribute LoginRequestDto dto,
+            @Validated @ModelAttribute LoginRequestDto dto,
             HttpServletRequest request
     ) throws LoginException {
 
-        LoginResponseDto responseDto = memberService.login(dto.getEmail(), dto.getPassword());
-        Long userId = responseDto.getId();
+        LoginResponseDto member = memberService.login(dto.getEmail(), dto.getPassword());
+        Long memberId = member.getId();
 
-        if (userId == null) {
+        if (memberId == null) {
             return "session-login";
         }
 
         HttpSession session = request.getSession();
-
-        MemberResponseDto loginUser = memberService.findUserById(userId);
-
-        session.setAttribute(Const.LOGIN_USER, loginUser);
+        // 세션에 유저 저장
+        session.setAttribute(Const.LOGIN_USER, member);
 
         return "redirect:/session-home";
     }

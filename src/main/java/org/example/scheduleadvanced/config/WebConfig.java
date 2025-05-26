@@ -3,14 +3,15 @@ package org.example.scheduleadvanced.config;
 import jakarta.servlet.Filter;
 import org.example.scheduleadvanced.filter.CustomFilter;
 import org.example.scheduleadvanced.filter.LoginFilter;
-import org.hibernate.metamodel.mapping.FilterRestrictable;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-public class webConfig implements WebMvcConfigurer {
+@ComponentScan(basePackages = "org.example")
+public class WebConfig implements WebMvcConfigurer {
 
     @Bean
     public FilterRegistrationBean customFilter(){
