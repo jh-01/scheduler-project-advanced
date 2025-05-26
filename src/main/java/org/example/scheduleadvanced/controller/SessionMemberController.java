@@ -52,6 +52,6 @@ public class SessionMemberController {
             session.invalidate();
         }
 
-        return "redirect:/session-home";
+        return "redirect:/session-login";
     }
 }
