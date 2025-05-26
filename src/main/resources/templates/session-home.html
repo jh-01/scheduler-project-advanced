@@ -7,7 +7,7 @@
 <body>
 <h1>Welcome Session Home!</h1>
 
-<p th:text="'안녕하세요, ' + ${loginUser.email} + '님!'">Hello, User!</p>
+<p th:text="'안녕하세요, ' + ${loginMember.email} + '님!'">Hello, User!</p>
 
 <!-- 로그아웃 버튼 -->
 <form th:action="@{/session-logout}" method="post" style="margin-top: 10px;">
