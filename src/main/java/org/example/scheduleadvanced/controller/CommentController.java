@@ -54,12 +54,12 @@ public class CommentController {
             @Validated @RequestBody CommentModifyRequestDto commentModifyRequestDto,
             HttpSession session
     ){
-        Long memberId = (Long) session.getAttribute("loginMember");
-        if (memberId == null) {
+        LoginResponseDto member = (LoginResponseDto) session.getAttribute("loginMember");
+        if (member == null) {
             throw new UnauthorizedException("로그인이 필요합니다.");
         }
 
-        CommentResponseDto commentResponseDto = commentService.modifyComment(commentId, commentModifyRequestDto.getContent(), memberId);
+        CommentResponseDto commentResponseDto = commentService.modifyComment(commentId, commentModifyRequestDto.getContent(), member.getId());
         return ResponseEntity.ok(commentResponseDto);
     }
 
